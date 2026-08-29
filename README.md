@@ -1,5 +1,12 @@
 # Fabio's 2.0.0
 
+[![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
+![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
+[![Validate](https://github.com/fabiovit/fabios/actions/workflows/validate.yml/badge.svg)](https://github.com/fabiovit/fabios/actions/workflows/validate.yml)
+[![Hassfest](https://github.com/fabiovit/fabios/actions/workflows/hassfest.yml/badge.svg)](https://github.com/fabiovit/fabios/actions/workflows/hassfest.yml)
+[![License](https://img.shields.io/github/license/fabiovit/fabios?label=license)](LICENSE)
+
+
 **Shared expenses, made simple. / Spese condivise, senza complicazioni.**
 
 Fabio's is a Home Assistant custom integration for managing shared expenses directly inside Home Assistant.  

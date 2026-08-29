@@ -10,7 +10,7 @@
 - Gestione completa di spese, saldi, rimborsi, ricorrenti e rate.
 - Ricorrenti non retroattive.
 - Import PDF/XLSX/CSV e backup JSON.
-- Aggiunti asset brand locali, HACS Action e Hassfest.
+- Aggiunti asset brand locali, HACS Action e Hassfest con badge di stato nel README.
 - Documentazione e traduzioni italiano/inglese.
 - Migliorata la robustezza del caricamento frontend durante i reload della config entry.
 
@@ -22,6 +22,6 @@
 - Complete management of expenses, balances, settlements, recurring expenses and installments.
 - Recurring expenses are non-retroactive.
 - PDF/XLSX/CSV import and JSON backup.
-- Added local brand assets, HACS Action and Hassfest.
+- Added local brand assets, HACS Action and Hassfest with status badges in the README.
 - Italian/English documentation and translations.
 - Improved frontend registration robustness during config-entry reloads.
