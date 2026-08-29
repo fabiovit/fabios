@@ -1,0 +1,31 @@
+name: Bug report / Segnalazione bug
+description: Report a problem with Fabio's / Segnala un problema di Fabio's
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Please include your Home Assistant and Fabio's versions. / Indica le versioni di Home Assistant e Fabio's."
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant version / Versione Home Assistant
+    validations:
+      required: true
+  - type: input
+    id: fabios_version
+    attributes:
+      label: Fabio's version / Versione Fabio's
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description / Descrizione
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs / Log rilevanti
+      render: text
