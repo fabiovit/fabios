@@ -61,7 +61,7 @@
       <div class="login">
         <h1>Fabio’s</h1>
         <p>Connessione sicura a Home Assistant…</p>
-        <div class="meta">v2.0.0</div>
+        <div class="meta">v2.1.0</div>
       </div>
     </div>
   </main>
@@ -169,7 +169,7 @@
 
     function balanceView(){
       const b=currentBalance();
-      return `${monthNav()}<div class="hero"><div class="eyebrow">Saldo del mese</div>${b?`<div class="big">${money(b.amount)}</div><div class="balance">${esc(person(b.from_person))} deve pagare ${esc(person(b.to_person))}</div>`:`<div class="big">0,00 €</div><div class="balance">Tutto regolato</div>`}</div>${b?`<button class="primary" id="settle" style="width:100%">Registra rimborso</button>`:""}`;
+      return `${monthNav()}<div class="hero"><div class="eyebrow">Saldo del mese</div>${b?`<div class="big">${money(b.amount)}</div><div class="balance">${esc(person(b.from_person))} deve pagare ${esc(person(b.to_person))}</div>`:`<div class="big">0,00 €</div><div class="balance">Tutto regolato</div>`}</div>${b?`<div class="actions"><button class="primary" id="settle">Registra rimborso</button><button id="settleMonth">Salda mese</button><button id="transferMonth">Riporta al mese successivo</button></div>`:""}`;
     }
 
     function expenseDialog(){
@@ -183,7 +183,7 @@
     }
 
     function render(){
-      root.innerHTML=`<div class="app"><div class="top"><div><div class="brand">Fabio’s</div><div class="sub">Spese condivise · v2.0.0</div></div><div class="status" id="status">Online</div></div>${tab==="home"?homeView():""}${tab==="expenses"?expensesView():""}${tab==="balance"?balanceView():""}<div class="nav"><button data-tab="home" class="${tab==="home"?"active":""}">Home</button><button data-tab="expenses" class="${tab==="expenses"?"active":""}">Spese</button><button data-tab="balance" class="${tab==="balance"?"active":""}">Saldo</button></div></div>${expenseDialog()}${settlementDialog()}`;
+      root.innerHTML=`<div class="app"><div class="top"><div><div class="brand">Fabio’s</div><div class="sub">Spese condivise · v2.1.0</div></div><div class="status" id="status">Online</div></div>${tab==="home"?homeView():""}${tab==="expenses"?expensesView():""}${tab==="balance"?balanceView():""}<div class="nav"><button data-tab="home" class="${tab==="home"?"active":""}">Home</button><button data-tab="expenses" class="${tab==="expenses"?"active":""}">Spese</button><button data-tab="balance" class="${tab==="balance"?"active":""}">Saldo</button></div></div>${expenseDialog()}${settlementDialog()}`;
       bind();
     }
 
@@ -198,6 +198,8 @@
       qa("[data-split]").forEach(b=>b.addEventListener("click",()=>chooseSplit(b.dataset.split)));
       q("#save")?.addEventListener("click",saveExpense);
       q("#saveSet")?.addEventListener("click",saveSettlement);
+      q("#settleMonth")?.addEventListener("click",settleMonth);
+      q("#transferMonth")?.addEventListener("click",transferMonth);
     }
 
     function openExpense(){
@@ -249,6 +251,19 @@
         document.getElementById("sa").value=b.amount;
       }
       document.getElementById("setDlg").showModal();
+    }
+
+    async function settleMonth(){
+      if(!currentBalance())return;
+      if(!confirm(`Saldare completamente il saldo di ${month}?`))return;
+      try{await ws("fabios/settle_month",{group_id:gid,month});await load()}catch(e){alert(e.message||e)}
+    }
+
+    async function transferMonth(){
+      if(!currentBalance())return;
+      const d=new Date(month+"-01T12:00:00");d.setMonth(d.getMonth()+1);const next=d.toISOString().slice(0,7);
+      if(!confirm(`Riportare il saldo di ${month} a ${next}?`))return;
+      try{await ws("fabios/transfer_month",{group_id:gid,month});await load()}catch(e){alert(e.message||e)}
     }
 
     async function saveSettlement(){

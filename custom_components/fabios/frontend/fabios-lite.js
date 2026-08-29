@@ -125,7 +125,7 @@ class FabiosLitePanel extends HTMLElement {
         <div class="top">
           <div>
             <div class="brand">Fabio’s</div>
-            <div class="sub">Lite · spese condivise · v2.0.0</div>
+            <div class="sub">Lite · spese condivise · v2.1.0</div>
           </div>
           <button class="ghost" id="refresh">↻</button>
         </div>
@@ -197,7 +197,7 @@ class FabiosLitePanel extends HTMLElement {
           ? `<div class="big">${this.money(balance.amount)}</div><div class="balance">${this.esc(this.person(balance.from_person))} deve pagare ${this.esc(this.person(balance.to_person))}</div>`
           : `<div class="big">0,00 €</div><div class="balance">Tutto regolato</div>`}
       </div>
-      ${balance ? `<button class="primary" id="settle" style="width:100%">Registra rimborso</button>` : ""}`;
+      ${balance ? `<div class="actions"><button class="primary" id="settle">Registra rimborso</button><button id="settleMonth">Salda mese</button><button id="transferMonth">Riporta al mese successivo</button></div>` : ""}`;
   }
 
   expenseRow(e){
@@ -266,6 +266,8 @@ class FabiosLitePanel extends HTMLElement {
     qa("[data-split]").forEach(b=>b.addEventListener("click",()=>this.chooseSplit(b.dataset.split)));
     q("#save")?.addEventListener("click",()=>this.saveExpense());
     q("#saveSet")?.addEventListener("click",()=>this.saveSettlement());
+    q("#settleMonth")?.addEventListener("click",()=>this.settleMonth());
+    q("#transferMonth")?.addEventListener("click",()=>this.transferMonth());
   }
 
   openExpense(){
@@ -355,6 +357,19 @@ class FabiosLitePanel extends HTMLElement {
       q("#sa").value=b.amount;
     }
     q("#setDlg").showModal();
+  }
+
+  async settleMonth(){
+    if(!this.currentBalance()) return;
+    if(!confirm(`Saldare completamente il saldo di ${this.month}?`)) return;
+    try{await this.ws("fabios/settle_month",{group_id:this.gid,month:this.month});await this.load()}catch(e){alert(e.message||e)}
+  }
+
+  async transferMonth(){
+    if(!this.currentBalance()) return;
+    const d=new Date(this.month+"-01T12:00:00");d.setMonth(d.getMonth()+1);const next=d.toISOString().slice(0,7);
+    if(!confirm(`Riportare il saldo di ${this.month} a ${next}?`)) return;
+    try{await this.ws("fabios/transfer_month",{group_id:this.gid,month:this.month});await this.load()}catch(e){alert(e.message||e)}
   }
 
   async saveSettlement(){

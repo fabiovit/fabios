@@ -1,4 +1,4 @@
-# Fabio's 2.0.0
+# Fabio's 2.1.0
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
@@ -25,7 +25,8 @@ Fabio's è un'integrazione custom per Home Assistant pensata per gestire le spes
 - WebApp standalone installabile dalla schermata Home dello smartphone
 - persone e gruppi multipli
 - spese condivise con quote personalizzabili
-- saldi automatici e registrazione dei rimborsi
+- saldi automatici, registrazione dei rimborsi e chiusura del mese
+- possibilità di **saldare il mese** oppure **riportare il saldo al mese successivo** senza modificare le spese originali
 - spese ricorrenti non retroattive
 - gestione delle rate con stato visibile, ad esempio **Rata 9/12**
 - modifica ed eliminazione delle spese
@@ -103,7 +104,8 @@ MIT License © 2026 Fabio Vittori.
 - Standalone WebApp that can be added to a smartphone Home Screen
 - multiple people and groups
 - shared expenses with customizable shares
-- automatic balances and settlement tracking
+- automatic balances, settlement tracking and month closing
+- option to **settle a month** or **carry its balance into the next month** without changing the original expenses
 - non-retroactive recurring expenses
 - installment tracking with visible progress, e.g. **Installment 9/12**
 - expense editing and deletion

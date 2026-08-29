@@ -35,7 +35,7 @@ class FabiosStore:
     def _migrate(self, data: dict[str, Any]) -> dict[str, Any]:
         data.setdefault("settings", {"currency": DEFAULT_CURRENCY})
         data["settings"].setdefault("currency", DEFAULT_CURRENCY)
-        for key in ("people", "expenses", "settlements", "groups", "recurring"):
+        for key in ("people", "expenses", "settlements", "groups", "recurring", "carryovers"):
             data.setdefault(key, [])
         data.setdefault("categories", ["Casa", "Spesa", "Ristoranti", "Animali", "Auto", "Bollette", "Abbonamenti", "Salute", "Tempo libero", "Viaggi", "Altro"])
         if not data["groups"]:
@@ -149,6 +149,46 @@ class FabiosStore:
         await self.async_save()
         return s
 
+
+    async def settle_month_balance(self, group_id: str, month: str):
+        balances = self.balances(group_id, month)
+        if not balances:
+            return {"created": 0, "month": month, "balances": []}
+        year, mon = (int(x) for x in month.split("-", 1))
+        settlement_date = f"{year:04d}-{mon:02d}-{monthrange(year, mon)[1]:02d}"
+        created = []
+        for b in balances:
+            s = new_settlement(
+                b["from_person"], b["to_person"], b["amount"], settlement_date,
+                group_id, f"Chiusura automatica mese {month}",
+            )
+            self.data["settlements"].append(s)
+            created.append(s)
+        await self.async_save()
+        return {"created": len(created), "month": month, "balances": created}
+
+    async def transfer_month_balance(self, group_id: str, month: str):
+        balances = self.balances(group_id, month)
+        if not balances:
+            return {"created": 0, "source_month": month, "target_month": add_months(f"{month}-01", 1)[:7], "carryovers": []}
+        target_month = add_months(f"{month}-01", 1)[:7]
+        created = []
+        for b in balances:
+            item = {
+                "id": f"carryover_{datetime.now().timestamp():.6f}_{len(created)}",
+                "from_person": b["from_person"],
+                "to_person": b["to_person"],
+                "amount": money(b["amount"]),
+                "group_id": group_id,
+                "source_month": month,
+                "target_month": target_month,
+                "created_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+            }
+            self.data["carryovers"].append(item)
+            created.append(item)
+        await self.async_save()
+        return {"created": len(created), "source_month": month, "target_month": target_month, "carryovers": created}
+
     async def add_recurring(self, description, amount, paid_by, shares, group_id, category, cadence, next_date, notes="", installments_total=None):
         self._validate_shares(amount, paid_by, shares, group_id)
         if cadence not in CADENCE_MONTHS:
@@ -253,7 +293,7 @@ class FabiosStore:
         if replace:
             self.data = self._migrate(payload)
         else:
-            for key in ("people", "groups", "expenses", "settlements", "recurring"):
+            for key in ("people", "groups", "expenses", "settlements", "recurring", "carryovers"):
                 ids = {x.get("id") for x in self.data[key]}
                 self.data[key].extend(x for x in payload.get(key, []) if x.get("id") not in ids)
             for c in payload.get("categories", []):
@@ -281,6 +321,16 @@ class FabiosStore:
             if month and not str(s.get("date", "")).startswith(month):
                 continue
             net[(s["from_person"], s["to_person"])] -= float(s["amount"])
+
+        if month:
+            for c in self.data.get("carryovers", []):
+                if c.get("group_id") != group_id:
+                    continue
+                key = (c["from_person"], c["to_person"])
+                if c.get("source_month") == month:
+                    net[key] -= float(c["amount"])
+                if c.get("target_month") == month:
+                    net[key] += float(c["amount"])
 
         out=[];seen=set()
         members=self.group(group_id)["members"]

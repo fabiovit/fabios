@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.0 — 2026-08-29
+
+### Italiano
+- Aggiunta la chiusura del mese nella sezione Saldi.
+- È ora possibile saldare automaticamente il saldo mensile registrando i rimborsi necessari.
+- È ora possibile riportare il saldo residuo al mese successivo senza modificare le spese originali.
+- I riporti sono registrati separatamente e non alterano statistiche o totali delle spese.
+- Funzione disponibile nella dashboard completa, Fabio's Lite e WebApp standalone.
+
+### English
+- Added month closing to the Balances section.
+- Monthly balances can now be settled automatically by recording the required settlements.
+- Outstanding balances can be carried into the next month without changing original expenses.
+- Carry-overs are stored separately and do not affect expense statistics or totals.
+- Available in the full dashboard, Fabio's Lite and the standalone WebApp.
+
 ## 2.0.0 — 2026-08-29
 
 ### Italiano

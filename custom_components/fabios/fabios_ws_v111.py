@@ -214,6 +214,34 @@ async def add_settlement(hass, connection, message):
 
 
 @websocket_api.websocket_command({
+    vol.Required("type"): "fabios/settle_month",
+    vol.Required("group_id"): str,
+    vol.Required("month"): str,
+})
+@websocket_api.async_response
+async def settle_month(hass, connection, message):
+    try:
+        result = await _store(hass).settle_month_balance(message["group_id"], message["month"])
+        _ok(connection, message, result)
+    except Exception as exc:
+        _err(connection, message, exc)
+
+
+@websocket_api.websocket_command({
+    vol.Required("type"): "fabios/transfer_month",
+    vol.Required("group_id"): str,
+    vol.Required("month"): str,
+})
+@websocket_api.async_response
+async def transfer_month(hass, connection, message):
+    try:
+        result = await _store(hass).transfer_month_balance(message["group_id"], message["month"])
+        _ok(connection, message, result)
+    except Exception as exc:
+        _err(connection, message, exc)
+
+
+@websocket_api.websocket_command({
     vol.Required("type"): "fabios/add_recurring",
     vol.Required("description"): str,
     vol.Required("amount"): vol.Coerce(float),
@@ -431,6 +459,8 @@ def async_register(hass: HomeAssistant) -> None:
         delete_expense,
         delete_expenses,
         add_settlement,
+        settle_month,
+        transfer_month,
         add_recurring,
         update_recurring,
         delete_recurring,
