@@ -1,23 +1,23 @@
 {
   "domain": "fabios",
   "name": "Fabio's",
-  "version": "2.0.0",
-  "documentation": "https://github.com/fabiovit/fabios",
-  "issue_tracker": "https://github.com/fabiovit/fabios/issues",
   "codeowners": [
     "@fabiovit"
   ],
   "config_flow": true,
-  "integration_type": "service",
-  "iot_class": "calculated",
   "dependencies": [
     "frontend",
     "http",
     "panel_custom"
   ],
+  "documentation": "https://github.com/fabiovit/fabios",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/fabiovit/fabios/issues",
   "requirements": [
     "pypdf==6.16.1",
     "openpyxl==3.1.5"
   ],
-  "single_config_entry": true
+  "single_config_entry": true,
+  "version": "2.0.0"
 }

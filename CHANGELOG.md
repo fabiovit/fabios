@@ -13,6 +13,7 @@
 - Aggiunti asset brand locali, HACS Action e Hassfest con badge di stato nel README.
 - Documentazione e traduzioni italiano/inglese.
 - Migliorata la robustezza del caricamento frontend durante i reload della config entry.
+- Manifest ordinato secondo Hassfest e rimossa la configurazione YAML non utilizzata.
 
 ### English
 - First stable public release of Fabio's.
@@ -25,3 +26,4 @@
 - Added local brand assets, HACS Action and Hassfest with status badges in the README.
 - Italian/English documentation and translations.
 - Improved frontend registration robustness during config-entry reloads.
+- Fixed manifest ordering for Hassfest and removed unused YAML setup.

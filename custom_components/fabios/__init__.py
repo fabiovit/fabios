@@ -15,10 +15,6 @@ from .fabios_ws_v111 import async_register as async_register_websocket
 PLATFORMS = ["sensor"]
 
 
-async def async_setup(hass: HomeAssistant, config: dict) -> bool:
-    return True
-
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     register_standalone_app(hass)
@@ -29,9 +25,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = {"store": store}
 
     frontend_dir = Path(__file__).parent / "frontend"
-    await hass.http.async_register_static_paths([
-        StaticPathConfig(STATIC_URL, str(frontend_dir), False)
-    ])
+    if not hass.data[DOMAIN].get("_static_registered"):
+        await hass.http.async_register_static_paths(
+            [StaticPathConfig(STATIC_URL, str(frontend_dir), False)]
+        )
+        hass.data[DOMAIN]["_static_registered"] = True
 
     
     if not hass.data[DOMAIN].get("_ws_registered"):
