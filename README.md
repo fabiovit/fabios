@@ -4,7 +4,7 @@
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
 [![Validate](https://github.com/fabiovit/fabios/actions/workflows/validate.yml/badge.svg)](https://github.com/fabiovit/fabios/actions/workflows/validate.yml)
 [![Hassfest](https://github.com/fabiovit/fabios/actions/workflows/hassfest.yml/badge.svg)](https://github.com/fabiovit/fabios/actions/workflows/hassfest.yml)
-[![License](https://img.shields.io/github/license/fabiovit/fabios?label=license)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 
 **Shared expenses, made simple. / Spese condivise, senza complicazioni.**
