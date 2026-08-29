@@ -1,0 +1,27 @@
+{
+  "title": "Fabio's",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Fabio's",
+        "description": "Set up Fabio's shared expense manager."
+      }
+    },
+    "abort": {
+      "already_configured": "Fabio's is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "month_total": {
+        "name": "Month expenses"
+      },
+      "open_balances": {
+        "name": "Open balances"
+      },
+      "recurring_active": {
+        "name": "Active recurring expenses"
+      }
+    }
+  }
+}

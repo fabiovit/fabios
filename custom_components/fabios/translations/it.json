@@ -1,0 +1,27 @@
+{
+  "title": "Fabio's",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Fabio's",
+        "description": "Configura Fabio's per gestire le spese condivise."
+      }
+    },
+    "abort": {
+      "already_configured": "Fabio's è già configurato."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "month_total": {
+        "name": "Spese del mese"
+      },
+      "open_balances": {
+        "name": "Saldi aperti"
+      },
+      "recurring_active": {
+        "name": "Spese ricorrenti attive"
+      }
+    }
+  }
+}

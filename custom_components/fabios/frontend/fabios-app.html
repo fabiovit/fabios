@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111318">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fabio's">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Fabio's</title>
+  <link rel="manifest" href="/fabios-app/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/fabios-app/icon.svg">
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#111318;--card:#191c23;--card2:#20242d;--line:#2d323d;
+      --text:#f6f7f9;--muted:#a8afbc;--accent:#2b9df4;--danger:#ef5350;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .app{max-width:680px;margin:0 auto;padding:18px 14px 88px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .brand{font-size:27px;font-weight:850;letter-spacing:-.8px}
+    .sub{font-size:12px;color:var(--muted)}
+    .status{font-size:11px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+    .month{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0 18px}
+    button{border:0;border-radius:14px;padding:12px 15px;background:var(--card2);color:var(--text);font-weight:750;min-height:44px}
+    button.primary{background:var(--accent);color:white}
+    button.ghost{background:transparent;border:1px solid var(--line)}
+    .hero{padding:22px;border:1px solid var(--line);border-radius:24px;background:var(--card);margin-bottom:14px}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .big{font-size:38px;font-weight:900;letter-spacing:-1.6px;margin:7px 0 4px}
+    .balance{font-size:18px;font-weight:760;line-height:1.35}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+    .section{margin-top:22px}.section h3{margin:0 0 10px;font-size:17px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+    .desc{font-weight:740}.meta{font-size:12px;color:var(--muted);margin-top:3px}.amount{font-weight:850;white-space:nowrap}.ratebadge{display:inline-flex;align-items:center;margin-top:6px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;font-size:11px;font-weight:850;color:var(--accent);background:var(--card2)}
+    .empty{padding:22px 0;text-align:center;color:var(--muted)}
+    .nav{position:sticky;bottom:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:rgba(25,28,35,.96);padding:8px;border:1px solid var(--line);border-radius:20px;margin-top:24px}
+    .nav button{padding:10px 6px;background:transparent;font-size:12px}.nav button.active{background:var(--card2)}
+    dialog{border:1px solid var(--line);border-radius:22px;background:var(--card);color:var(--text);width:min(92vw,560px);padding:0}
+    dialog::backdrop{background:rgba(0,0,0,.68)}
+    .modal{padding:20px}
+    label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px}
+    input,select{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--card2);color:var(--text);padding:12px;font-size:16px;min-height:44px}
+    .splitpreset{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+    .modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+    .login{padding:34px 22px;text-align:center;border:1px solid var(--line);background:var(--card);border-radius:24px;margin-top:50px}
+    .login h1{font-size:30px;margin:0 0 8px}.login p{color:var(--muted);line-height:1.5}
+    .error{margin-top:12px;padding:12px;border:1px solid #663737;background:#2b1a1a;border-radius:12px;color:#ffc8c8;font-size:13px}
+    @media(max-width:420px){.big{font-size:32px}.actions{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}}
+  </style>
+</head>
+<body>
+  <main id="root">
+    <div class="app">
+      <div class="login">
+        <h1>Fabio’s</h1>
+        <p>Connessione sicura a Home Assistant…</p>
+        <div class="meta">v2.0.0</div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import {
+      getAuth,
+      createConnection,
+      ERR_HASS_HOST_REQUIRED,
+      ERR_INVALID_AUTH
+    } from "https://cdn.jsdelivr.net/npm/home-assistant-js-websocket@9.6.0/+esm";
+
+    const root=document.getElementById("root");
+    let connection=null, state=null, gid=null, month=new Date().toISOString().slice(0,7), tab="home", splitMode="equal";
+
+    const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const ws=(type,payload={})=>connection.sendMessagePromise({type,...payload});
+    const money=v=>new Intl.NumberFormat("it-IT",{style:"currency",currency:state?.settings?.currency||"EUR"}).format(Number(v||0));
+    const person=id=>state?.people?.find(p=>p.id===id)?.name||"—";
+    const group=()=>state?.groups?.find(g=>g.id===gid);
+    const members=()=>{const g=group();return (g?.members||[]).map(id=>state.people.find(p=>p.id===id)).filter(Boolean)};
+    const monthLabel=()=>{const[y,m]=month.split("-").map(Number);return new Intl.DateTimeFormat("it-IT",{month:"long",year:"numeric"}).format(new Date(y,m-1,1))};
+    const expenses=()=>[...(state?.expenses||[])].filter(e=>e.group_id===gid&&String(e.date||"").startsWith(month)).sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+    const currentBalance=()=>state?.balances?.[0]||null;
+
+    async function authenticate(){
+      const tokenKey="fabios_app_hass_tokens";
+      const authOptions={
+        hassUrl:location.origin,
+        clientId:location.origin,
+        redirectUrl:location.origin+"/fabios-app/",
+        limitHassInstance:true,
+        async loadTokens(){
+          try{return JSON.parse(localStorage.getItem(tokenKey)||"null")||undefined}catch{return undefined}
+        },
+        saveTokens(tokens){
+          if(tokens)localStorage.setItem(tokenKey,JSON.stringify(tokens));
+          else localStorage.removeItem(tokenKey);
+        }
+      };
+      try{
+        let auth;
+        try{
+          auth=await getAuth(authOptions);
+        }catch(err){
+          if(err===ERR_HASS_HOST_REQUIRED){
+            auth=await getAuth({...authOptions,hassUrl:location.origin});
+          }else if(err===ERR_INVALID_AUTH){
+            localStorage.removeItem(tokenKey);
+            auth=await getAuth(authOptions);
+          }else{
+            throw err;
+          }
+        }
+        connection=await createConnection({auth,setupRetry:-1});
+        if(location.search.includes("auth_callback=1")) history.replaceState(null,"",location.pathname);
+        connection.addEventListener("ready",()=>load());
+        connection.addEventListener("disconnected",()=>setStatus("Connessione…"));
+        await load();
+      }catch(err){
+        root.innerHTML=`<div class="app"><div class="login"><h1>Fabio’s</h1><p>Non riesco a collegarmi a Home Assistant.</p><div class="error">${esc(err?.message||err)}</div><button class="primary" id="retry" style="margin-top:16px">Riprova</button></div></div>`;
+        document.getElementById("retry")?.addEventListener("click",()=>location.reload());
+      }
+    }
+
+    function setStatus(txt){const el=document.getElementById("status");if(el)el.textContent=txt}
+
+    async function load(){
+      const payload={month};
+      if(gid)payload.group_id=gid;
+      state=await ws("fabios/get_state",payload);
+      gid=state.active_group_id;
+      month=state.selected_month||month;
+      render();
+    }
+
+    function shiftMonth(delta){
+      const[y,m]=month.split("-").map(Number);
+      const d=new Date(y,m-1+delta,1);
+      month=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+      load();
+    }
+
+    function monthNav(){
+      return `<div class="month"><button class="ghost" id="prevMonth">‹</button><strong style="text-transform:capitalize">${monthLabel()}</strong><button class="ghost" id="nextMonth">›</button></div>`;
+    }
+
+    function expenseRow(e){
+      const installment=(e.installment_current&&e.installment_total)
+        ? `<div class="ratebadge">Rata ${esc(e.installment_current)}/${esc(e.installment_total)}</div>`
+        : "";
+      return `<div class="row"><div style="min-width:0"><div class="desc">${esc(e.description)}</div>${installment}<div class="meta">${esc(person(e.paid_by))} ha pagato · ${esc(e.date)}</div></div><div class="amount">${money(e.amount)}</div></div>`;
+    }
+
+    function homeView(){
+      const b=currentBalance(), ex=expenses(), total=state?.summary?.month_total||0;
+      const txt=b?`${person(b.from_person)} deve ${money(b.amount)} a ${person(b.to_person)}`:"Tutto regolato per questo mese";
+      return `${monthNav()}<div class="hero"><div class="eyebrow">Spese del mese</div><div class="big">${money(total)}</div><div class="balance">${esc(txt)}</div></div><div class="actions"><button class="primary" id="newExpense">＋ Nuova spesa</button><button id="settle">${b?"Registra rimborso":"Saldo regolato"}</button></div><div class="section"><h3>Ultime spese</h3>${ex.length?ex.slice(0,6).map(expenseRow).join(""):`<div class="empty">Nessuna spesa.</div>`}</div>`;
+    }
+
+    function expensesView(){
+      const ex=expenses();
+      return `${monthNav()}<div class="section"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3 style="margin:0">Spese</h3><button class="primary" id="newExpense">＋ Aggiungi</button></div>${ex.length?ex.map(expenseRow).join(""):`<div class="empty">Nessuna spesa.</div>`}</div>`;
+    }
+
+    function balanceView(){
+      const b=currentBalance();
+      return `${monthNav()}<div class="hero"><div class="eyebrow">Saldo del mese</div>${b?`<div class="big">${money(b.amount)}</div><div class="balance">${esc(person(b.from_person))} deve pagare ${esc(person(b.to_person))}</div>`:`<div class="big">0,00 €</div><div class="balance">Tutto regolato</div>`}</div>${b?`<button class="primary" id="settle" style="width:100%">Registra rimborso</button>`:""}`;
+    }
+
+    function expenseDialog(){
+      const ms=members(),opts=ms.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
+      return `<dialog id="expDlg"><div class="modal"><h2 style="margin-top:0">Nuova spesa</h2><label>Descrizione</label><input id="d" placeholder="Es. Spesa, cena, benzina"><label>Importo</label><input id="a" type="number" min="0.01" step="0.01" inputmode="decimal"><label>Pagato da</label><select id="payer">${opts}</select><label>Data</label><input id="dt" type="date" value="${new Date().toISOString().slice(0,10)}"><label>Divisione</label><div class="splitpreset"><button type="button" data-split="equal">50 / 50</button><button type="button" data-split="payer">Tutto chi paga</button>${ms[0]?`<button type="button" data-split="${ms[0].id}">100% ${esc(ms[0].name)}</button>`:""}${ms[1]?`<button type="button" data-split="${ms[1].id}">100% ${esc(ms[1].name)}</button>`:""}</div><div id="splitInfo" class="meta" style="margin-top:10px">Divisione 50 / 50</div><div class="modalactions"><button class="ghost close">Annulla</button><button class="primary" id="save">Salva</button></div></div></dialog>`;
+    }
+
+    function settlementDialog(){
+      const opts=members().map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
+      return `<dialog id="setDlg"><div class="modal"><h2 style="margin-top:0">Registra rimborso</h2><label>Da</label><select id="sf">${opts}</select><label>A</label><select id="st">${opts}</select><label>Importo</label><input id="sa" type="number" min="0.01" step="0.01"><label>Data</label><input id="sd" type="date" value="${new Date().toISOString().slice(0,10)}"><div class="modalactions"><button class="ghost close">Annulla</button><button class="primary" id="saveSet">Salva</button></div></div></dialog>`;
+    }
+
+    function render(){
+      root.innerHTML=`<div class="app"><div class="top"><div><div class="brand">Fabio’s</div><div class="sub">Spese condivise · v2.0.0</div></div><div class="status" id="status">Online</div></div>${tab==="home"?homeView():""}${tab==="expenses"?expensesView():""}${tab==="balance"?balanceView():""}<div class="nav"><button data-tab="home" class="${tab==="home"?"active":""}">Home</button><button data-tab="expenses" class="${tab==="expenses"?"active":""}">Spese</button><button data-tab="balance" class="${tab==="balance"?"active":""}">Saldo</button></div></div>${expenseDialog()}${settlementDialog()}`;
+      bind();
+    }
+
+    function bind(){
+      const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)];
+      q("#prevMonth")?.addEventListener("click",()=>shiftMonth(-1));
+      q("#nextMonth")?.addEventListener("click",()=>shiftMonth(1));
+      qa("[data-tab]").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.tab;render()}));
+      q("#newExpense")?.addEventListener("click",openExpense);
+      q("#settle")?.addEventListener("click",openSettlement);
+      qa(".close").forEach(b=>b.addEventListener("click",()=>b.closest("dialog").close()));
+      qa("[data-split]").forEach(b=>b.addEventListener("click",()=>chooseSplit(b.dataset.split)));
+      q("#save")?.addEventListener("click",saveExpense);
+      q("#saveSet")?.addEventListener("click",saveSettlement);
+    }
+
+    function openExpense(){
+      splitMode="equal";
+      document.getElementById("d").value="";
+      document.getElementById("a").value="";
+      document.getElementById("dt").value=new Date().toISOString().slice(0,10);
+      document.getElementById("splitInfo").textContent="Divisione 50 / 50";
+      document.getElementById("expDlg").showModal();
+    }
+
+    function chooseSplit(mode){
+      splitMode=mode;
+      const info=document.getElementById("splitInfo");
+      if(mode==="equal")info.textContent="Divisione 50 / 50";
+      else if(mode==="payer")info.textContent="100% a carico di chi ha pagato";
+      else info.textContent=`100% a carico di ${person(mode)}`;
+    }
+
+    function buildShares(amount,payer){
+      const ms=members(),shares={};ms.forEach(p=>shares[p.id]=0);
+      if(splitMode==="payer"){shares[payer]=amount;return shares}
+      if(splitMode&&splitMode!=="equal"){shares[splitMode]=amount;return shares}
+      if(ms.length===2){const first=Math.round((amount/2)*100)/100;shares[ms[0].id]=first;shares[ms[1].id]=Math.round((amount-first)*100)/100;return shares}
+      if(!ms.length)return shares;
+      const each=Math.floor((amount/ms.length)*100)/100;let assigned=0;
+      ms.forEach((p,i)=>{shares[p.id]=i===ms.length-1?Math.round((amount-assigned)*100)/100:each;assigned+=shares[p.id]});
+      return shares;
+    }
+
+    async function saveExpense(){
+      try{
+        const description=document.getElementById("d").value.trim();
+        const amount=Number(document.getElementById("a").value);
+        const payer=document.getElementById("payer").value;
+        if(!description)throw new Error("Inserisci una descrizione");
+        if(!amount||amount<=0)throw new Error("Inserisci un importo valido");
+        await ws("fabios/add_expense",{description,amount,paid_by:payer,shares:buildShares(amount,payer),group_id:gid,category:"Altro",date:document.getElementById("dt").value,notes:"Inserita da Fabio’s WebApp"});
+        document.getElementById("expDlg").close();
+        await load();
+      }catch(e){alert(e.message||e)}
+    }
+
+    function openSettlement(){
+      const b=currentBalance();
+      if(b){
+        document.getElementById("sf").value=b.from_person;
+        document.getElementById("st").value=b.to_person;
+        document.getElementById("sa").value=b.amount;
+      }
+      document.getElementById("setDlg").showModal();
+    }
+
+    async function saveSettlement(){
+      try{
+        const from=document.getElementById("sf").value,to=document.getElementById("st").value,amount=Number(document.getElementById("sa").value);
+        if(from===to)throw new Error("Scegli due persone diverse");
+        if(!amount||amount<=0)throw new Error("Inserisci un importo valido");
+        await ws("fabios/add_settlement",{from_person:from,to_person:to,amount,group_id:gid,date:document.getElementById("sd").value,notes:"Registrato da Fabio’s WebApp"});
+        document.getElementById("setDlg").close();
+        await load();
+      }catch(e){alert(e.message||e)}
+    }
+
+    if("serviceWorker" in navigator){
+      navigator.serviceWorker.register("/fabios-app/sw.js",{scope:"/fabios-app/"}).catch(()=>{});
+    }
+
+    authenticate();
+  </script>
+</body>
+</html>

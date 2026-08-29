@@ -1,0 +1,20 @@
+{
+  "id": "/fabios-app/",
+  "name": "Fabio's",
+  "short_name": "Fabio's",
+  "description": "Gestione semplice delle spese condivise",
+  "start_url": "/fabios-app/",
+  "scope": "/fabios-app/",
+  "display": "standalone",
+  "background_color": "#111318",
+  "theme_color": "#111318",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/fabios-app/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
