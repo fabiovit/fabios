@@ -1,4 +1,4 @@
-# Fabio's 2.1.0
+# Fabio's 2.1.1
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
@@ -33,6 +33,7 @@ Fabio's è un'integrazione custom per Home Assistant pensata per gestire le spes
 - categorie e statistiche mensili
 - importazione PDF, XLSX e CSV con anteprima
 - backup/import JSON
+- **export CSV del mese selezionato**
 - sensori Home Assistant
 - storage locale persistente
 - interfaccia responsive
@@ -112,6 +113,7 @@ MIT License © 2026 Fabio Vittori.
 - categories and monthly statistics
 - PDF, XLSX and CSV import with preview
 - JSON backup/import
+- **CSV export for the selected month**
 - Home Assistant sensors
 - persistent local storage
 - responsive interface
