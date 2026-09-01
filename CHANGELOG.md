@@ -5,11 +5,15 @@
 ### Italiano
 - Corretto il modo in cui le divisioni 50/50 vengono mostrate nella schermata di modifica.
 - Per importi non divisibili esattamente al centesimo, ad esempio 19,99 €, Fabio's continua a salvare correttamente quote come 9,99 € + 10,00 €, ma ora mostra di nuovo 50,00% / 50,00% invece delle percentuali ricostruite 49,97% / 50,03%.
+- Aggiunta in **Fabio's Lite** la possibilità di modificare ed eliminare le spese già inserite direttamente dalla sezione Spese.
+- Durante la modifica in Lite vengono mantenuti pagatore, data, categoria, note e divisione originale; le divisioni personalizzate vengono conservate anche se si modifica l'importo.
 - Nessuna modifica alla logica dei saldi o alle quote monetarie salvate.
 
 ### English
 - Fixed how 50/50 splits are displayed in the expense edit screen.
 - For amounts that cannot be divided evenly to the cent, such as €19.99, Fabio's still stores the correct €9.99 + €10.00 shares while showing 50.00% / 50.00% instead of reconstructed 49.97% / 50.03% percentages.
+- Added the ability to edit and delete existing expenses directly from the Expenses section in **Fabio's Lite**.
+- Lite editing preserves payer, date, category, notes and the original split; custom splits are preserved even when the amount is changed.
 - No changes to balance calculations or stored monetary shares.
 
 ## 2.1.1 — 2026-09-01
