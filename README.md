@@ -1,4 +1,4 @@
-# Fabio's 2.1.2
+# Fabio's 2.1.3
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
@@ -22,6 +22,7 @@ Fabio's è un'integrazione custom per Home Assistant pensata per gestire le spes
 
 - Dashboard completa **Fabio's** nella sidebar di Home Assistant
 - **Fabio's Lite**, interfaccia semplificata e ottimizzata per smartphone
+- modifica ed eliminazione delle spese direttamente da **Fabio's Lite**
 - WebApp standalone installabile dalla schermata Home dello smartphone
 - persone e gruppi multipli
 - spese condivise con quote personalizzabili
@@ -66,7 +67,7 @@ Dopo l'installazione è disponibile il pannello:
 
 `/fabios-lite`
 
-Utilizza gli stessi dati della dashboard completa ma con un'interfaccia più semplice.
+Utilizza gli stessi dati della dashboard completa ma con un'interfaccia più semplice. Le spese già inserite possono essere modificate o eliminate direttamente dalla sezione **Spese**.
 
 ### WebApp standalone
 
@@ -103,6 +104,7 @@ MIT License © 2026 Fabio Vittori.
 
 - Full **Fabio's** dashboard in the Home Assistant sidebar
 - **Fabio's Lite**, a simplified mobile-first interface
+- edit and delete expenses directly from **Fabio's Lite**
 - Standalone WebApp that can be added to a smartphone Home Screen
 - multiple people and groups
 - shared expenses with customizable shares
@@ -147,7 +149,7 @@ After installation, the simplified panel is available at:
 
 `/fabios-lite`
 
-It uses the same data as the full dashboard.
+It uses the same data as the full dashboard. Existing expenses can be edited or deleted directly from the **Expenses** section.
 
 ### Standalone WebApp
 
