@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.2 — 2026-09-01
+
+### Italiano
+- Corretto il modo in cui le divisioni 50/50 vengono mostrate nella schermata di modifica.
+- Per importi non divisibili esattamente al centesimo, ad esempio 19,99 €, Fabio's continua a salvare correttamente quote come 9,99 € + 10,00 €, ma ora mostra di nuovo 50,00% / 50,00% invece delle percentuali ricostruite 49,97% / 50,03%.
+- Nessuna modifica alla logica dei saldi o alle quote monetarie salvate.
+
+### English
+- Fixed how 50/50 splits are displayed in the expense edit screen.
+- For amounts that cannot be divided evenly to the cent, such as €19.99, Fabio's still stores the correct €9.99 + €10.00 shares while showing 50.00% / 50.00% instead of reconstructed 49.97% / 50.03% percentages.
+- No changes to balance calculations or stored monetary shares.
+
 ## 2.1.1 — 2026-09-01
 
 ### Italiano
@@ -7,14 +19,12 @@
 - Aggiunto l'export CSV del mese selezionato nella sezione Spese.
 - Il CSV include data, descrizione, categoria, importo, pagatore, quote per persona, rate e note.
 - Migliorato il cache-busting del frontend dopo gli aggiornamenti.
-- In modifica, le spese divise 50/50 con importi non divisibili esattamente al centesimo vengono ora mostrate nuovamente come 50,00% / 50,00%, senza alterare le quote monetarie salvate.
 
 ### English
 - Fixed JSON backup downloads.
 - Added CSV export for the selected month in the Expenses section.
 - CSV exports include date, description, category, amount, payer, per-person shares, installments and notes.
 - Improved frontend cache-busting after upgrades.
-- When editing a 50/50 expense whose amount cannot be split evenly to the cent, Fabio's now displays 50.00% / 50.00% again without changing the stored monetary shares.
 
 ## 2.1.0 — 2026-08-29
 
