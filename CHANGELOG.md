@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.1 — 2026-09-01
+
+### Italiano
+- Corretto il download del backup JSON.
+- Aggiunto l'export CSV del mese selezionato nella sezione Spese.
+- Il CSV include data, descrizione, categoria, importo, pagatore, quote per persona, rate e note.
+- Migliorato il cache-busting del frontend dopo gli aggiornamenti.
+- In modifica, le spese divise 50/50 con importi non divisibili esattamente al centesimo vengono ora mostrate nuovamente come 50,00% / 50,00%, senza alterare le quote monetarie salvate.
+
+### English
+- Fixed JSON backup downloads.
+- Added CSV export for the selected month in the Expenses section.
+- CSV exports include date, description, category, amount, payer, per-person shares, installments and notes.
+- Improved frontend cache-busting after upgrades.
+- When editing a 50/50 expense whose amount cannot be split evenly to the cent, Fabio's now displays 50.00% / 50.00% again without changing the stored monetary shares.
+
 ## 2.1.0 — 2026-08-29
 
 ### Italiano
