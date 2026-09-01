@@ -1,4 +1,3 @@
-
 class FabiosLitePanel extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
@@ -8,6 +7,8 @@ class FabiosLitePanel extends HTMLElement {
       this.month = new Date().toISOString().slice(0,7);
       this.gid = null;
       this.tab = "home";
+      this.editExpenseId = null;
+      this.editExpenseOriginal = null;
       this.load();
     }
   }
@@ -98,6 +99,7 @@ class FabiosLitePanel extends HTMLElement {
         button{border:0;border-radius:14px;padding:12px 15px;background:var(--secondary-background-color);color:inherit;font:inherit;font-weight:700;min-height:44px;cursor:pointer}
         button.primary{background:var(--primary-color);color:white}
         button.ghost{background:transparent;border:1px solid var(--divider-color)}
+        button.danger{color:var(--error-color,#c62828);background:transparent;border:1px solid var(--divider-color)}
         .hero{padding:22px;border:1px solid var(--divider-color);border-radius:24px;background:var(--card-background-color);margin-bottom:14px}
         .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--secondary-text-color)}
         .big{font-size:38px;font-weight:850;letter-spacing:-1.4px;margin:7px 0 4px}
@@ -107,6 +109,7 @@ class FabiosLitePanel extends HTMLElement {
         .section h3{margin:0 0 10px;font-size:17px}
         .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--divider-color)}
         .desc{font-weight:720}.meta{font-size:12px;color:var(--secondary-text-color);margin-top:3px}.amount{font-weight:800;white-space:nowrap}.ratebadge{display:inline-flex;align-items:center;margin-top:6px;padding:4px 8px;border:1px solid var(--divider-color);border-radius:999px;font-size:11px;font-weight:800;color:var(--primary-color);background:var(--secondary-background-color)}
+        .rowactions{display:flex;gap:6px;justify-content:flex-end;margin-top:7px}.rowactions button{min-height:34px;padding:6px 9px;border-radius:10px;font-size:12px}
         .nav{position:sticky;bottom:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--card-background-color);padding:8px;border:1px solid var(--divider-color);border-radius:20px;margin-top:24px}
         .nav button{padding:10px 6px;background:transparent;font-size:12px}
         .nav button.active{background:var(--secondary-background-color)}
@@ -118,14 +121,14 @@ class FabiosLitePanel extends HTMLElement {
         .splitpreset{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
         .modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
         .empty{padding:20px 0;color:var(--secondary-text-color);text-align:center}
-        @media(max-width:420px){.big{font-size:32px}.actions{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}}
+        @media(max-width:420px){.big{font-size:32px}.actions{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}.row{align-items:flex-start}.rowactions{flex-direction:column}.rowactions button{width:100%}}
       </style>
 
       <div class="app">
         <div class="top">
           <div>
             <div class="brand">Fabio’s</div>
-            <div class="sub">Lite · spese condivise · v2.1.0</div>
+            <div class="sub">Lite · spese condivise · v2.1.2</div>
           </div>
           <button class="ghost" id="refresh">↻</button>
         </div>
@@ -172,7 +175,7 @@ class FabiosLitePanel extends HTMLElement {
       </div>
       <div class="section">
         <h3>Ultime spese</h3>
-        ${expenses.length ? expenses.slice(0,6).map(e=>this.expenseRow(e)).join("") : `<div class="empty">Nessuna spesa.</div>`}
+        ${expenses.length ? expenses.slice(0,6).map(e=>this.expenseRow(e,false)).join("") : `<div class="empty">Nessuna spesa.</div>`}
       </div>`;
   }
 
@@ -184,7 +187,7 @@ class FabiosLitePanel extends HTMLElement {
           <h3 style="margin:0">Spese</h3>
           <button class="primary" id="newExpense">＋ Aggiungi</button>
         </div>
-        ${expenses.length ? expenses.map(e=>this.expenseRow(e)).join("") : `<div class="empty">Nessuna spesa.</div>`}
+        ${expenses.length ? expenses.map(e=>this.expenseRow(e,true)).join("") : `<div class="empty">Nessuna spesa.</div>`}
       </div>`;
   }
 
@@ -200,24 +203,28 @@ class FabiosLitePanel extends HTMLElement {
       ${balance ? `<div class="actions"><button class="primary" id="settle">Registra rimborso</button><button id="settleMonth">Salda mese</button><button id="transferMonth">Riporta al mese successivo</button></div>` : ""}`;
   }
 
-  expenseRow(e){
+  expenseRow(e,editable=false){
     const installment=(e.installment_current&&e.installment_total)
       ? `<div class="ratebadge">Rata ${this.esc(e.installment_current)}/${this.esc(e.installment_total)}</div>`
       : "";
+    const actions=editable ? `<div class="rowactions"><button class="ghost edit-exp" data-id="${this.esc(e.id)}">Modifica</button><button class="danger delete-exp" data-id="${this.esc(e.id)}">Elimina</button></div>` : "";
     return `<div class="row">
-      <div style="min-width:0">
+      <div style="min-width:0;flex:1">
         <div class="desc">${this.esc(e.description)}</div>
         ${installment}
         <div class="meta">${this.esc(this.person(e.paid_by))} ha pagato · ${this.esc(e.date)}</div>
       </div>
-      <div class="amount">${this.money(e.amount)}</div>
+      <div style="text-align:right">
+        <div class="amount">${this.money(e.amount)}</div>
+        ${actions}
+      </div>
     </div>`;
   }
 
   expenseDialog(members){
     const opts=members.map(p=>`<option value="${p.id}">${this.esc(p.name)}</option>`).join("");
     return `<dialog id="expDlg"><div class="modal">
-      <h2 style="margin-top:0">Nuova spesa</h2>
+      <h2 id="expDlgTitle" style="margin-top:0">Nuova spesa</h2>
       <label>Descrizione</label><input id="d" placeholder="Es. Spesa, cena, benzina">
       <label>Importo</label><input id="a" type="number" min="0.01" step="0.01" inputmode="decimal">
       <label>Pagato da</label><select id="payer">${opts}</select>
@@ -264,6 +271,8 @@ class FabiosLitePanel extends HTMLElement {
     q("#settle")?.addEventListener("click",()=>this.openSettlement());
     qa(".close").forEach(b=>b.addEventListener("click",()=>b.closest("dialog").close()));
     qa("[data-split]").forEach(b=>b.addEventListener("click",()=>this.chooseSplit(b.dataset.split)));
+    qa(".edit-exp").forEach(b=>b.addEventListener("click",()=>this.openEditExpense(b.dataset.id)));
+    qa(".delete-exp").forEach(b=>b.addEventListener("click",()=>this.deleteExpense(b.dataset.id)));
     q("#save")?.addEventListener("click",()=>this.saveExpense());
     q("#saveSet")?.addEventListener("click",()=>this.saveSettlement());
     q("#settleMonth")?.addEventListener("click",()=>this.settleMonth());
@@ -271,27 +280,77 @@ class FabiosLitePanel extends HTMLElement {
   }
 
   openExpense(){
+    this.editExpenseId=null;
+    this.editExpenseOriginal=null;
     this.splitMode="equal";
     const q=s=>this.shadowRoot.querySelector(s);
+    q("#expDlgTitle").textContent="Nuova spesa";
     q("#d").value="";
     q("#a").value="";
     q("#dt").value=new Date().toISOString().slice(0,10);
+    if(this.members()[0]) q("#payer").value=this.members()[0].id;
     q("#splitInfo").textContent="Divisione 50 / 50";
     q("#expDlg").showModal();
   }
 
+  inferSplitMode(expense){
+    const members=this.members();
+    const amount=Number(expense.amount||0);
+    const vals=members.map(p=>Number(expense.shares?.[p.id]||0));
+    if(members.length===2 && Math.abs((vals[0]+vals[1])-amount)<.011 && Math.abs(vals[0]-vals[1])<=.011) return "equal";
+    const others=members.filter(p=>p.id!==expense.paid_by).reduce((s,p)=>s+Number(expense.shares?.[p.id]||0),0);
+    if(Math.abs(Number(expense.shares?.[expense.paid_by]||0)-amount)<.011 && others<.011) return "payer";
+    const full=members.find(p=>Math.abs(Number(expense.shares?.[p.id]||0)-amount)<.011 && members.filter(x=>x.id!==p.id).reduce((s,x)=>s+Number(expense.shares?.[x.id]||0),0)<.011);
+    return full?.id || "custom";
+  }
+
+  openEditExpense(id){
+    const expense=(this.state?.expenses||[]).find(e=>e.id===id);
+    if(!expense) return;
+    this.editExpenseId=id;
+    this.editExpenseOriginal=JSON.parse(JSON.stringify(expense));
+    this.splitMode=this.inferSplitMode(expense);
+    const q=s=>this.shadowRoot.querySelector(s);
+    q("#expDlgTitle").textContent="Modifica spesa";
+    q("#d").value=expense.description||"";
+    q("#a").value=expense.amount||"";
+    q("#payer").value=expense.paid_by||"";
+    q("#dt").value=expense.date||"";
+    this.updateSplitInfo();
+    q("#expDlg").showModal();
+  }
+
+  updateSplitInfo(){
+    const q=s=>this.shadowRoot.querySelector(s);
+    if(this.splitMode==="equal") q("#splitInfo").textContent="Divisione 50 / 50";
+    else if(this.splitMode==="payer") q("#splitInfo").textContent="100% a carico di chi ha pagato";
+    else if(this.splitMode==="custom") q("#splitInfo").textContent="Divisione personalizzata mantenuta";
+    else q("#splitInfo").textContent=`100% a carico di ${this.person(this.splitMode)}`;
+  }
+
   chooseSplit(mode){
     this.splitMode=mode;
-    const q=s=>this.shadowRoot.querySelector(s);
-    if(mode==="equal") q("#splitInfo").textContent="Divisione 50 / 50";
-    else if(mode==="payer") q("#splitInfo").textContent="100% a carico di chi ha pagato";
-    else q("#splitInfo").textContent=`100% a carico di ${this.person(mode)}`;
+    this.updateSplitInfo();
   }
 
   buildShares(amount,payer){
     const members=this.members();
     const shares={};
     members.forEach(p=>shares[p.id]=0);
+
+    if(this.splitMode==="custom" && this.editExpenseOriginal){
+      const oldAmount=Number(this.editExpenseOriginal.amount||0);
+      if(oldAmount>0){
+        let assigned=0;
+        members.forEach((p,i)=>{
+          const ratio=Number(this.editExpenseOriginal.shares?.[p.id]||0)/oldAmount;
+          const value=i===members.length-1 ? Math.round((amount-assigned)*100)/100 : Math.round((amount*ratio)*100)/100;
+          shares[p.id]=value;
+          assigned+=value;
+        });
+        return shares;
+      }
+    }
 
     if(this.splitMode==="payer"){
       shares[payer]=amount;
@@ -330,18 +389,39 @@ class FabiosLitePanel extends HTMLElement {
       if(!description) throw new Error("Inserisci una descrizione");
       if(!amount || amount<=0) throw new Error("Inserisci un importo valido");
 
-      await this.ws("fabios/add_expense",{
+      const payload={
         description,
         amount,
         paid_by:payer,
         shares:this.buildShares(amount,payer),
         group_id:this.gid,
-        category:"Altro",
+        category:this.editExpenseOriginal?.category || "Altro",
         date:q("#dt").value,
-        notes:"Inserita da Fabio’s Lite"
-      });
+        notes:this.editExpenseOriginal?.notes || "Inserita da Fabio’s Lite"
+      };
+
+      if(this.editExpenseId){
+        payload.expense_id=this.editExpenseId;
+        await this.ws("fabios/update_expense",payload);
+      } else {
+        await this.ws("fabios/add_expense",payload);
+      }
 
       q("#expDlg").close();
+      this.editExpenseId=null;
+      this.editExpenseOriginal=null;
+      await this.load();
+    } catch(e) {
+      alert(e.message||e);
+    }
+  }
+
+  async deleteExpense(id){
+    const expense=(this.state?.expenses||[]).find(e=>e.id===id);
+    if(!expense) return;
+    if(!confirm(`Eliminare definitivamente “${expense.description}” da ${this.money(expense.amount)}?`)) return;
+    try {
+      await this.ws("fabios/delete_expenses",{expense_ids:[id]});
       await this.load();
     } catch(e) {
       alert(e.message||e);
