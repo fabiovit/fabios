@@ -1,4 +1,4 @@
-# Fabio's 2.1.4
+# Fabio's 2.1.5
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
@@ -26,6 +26,7 @@ Fabio's è un'integrazione custom per Home Assistant pensata per gestire le spes
 - WebApp standalone installabile dalla schermata Home dello smartphone
 - modifica ed eliminazione delle spese anche nella **WebApp standalone**
 - versione della WebApp sincronizzata automaticamente con la versione installata di Fabio's
+- visualizzazione della **divisione percentuale delle spese** in dashboard completa, Fabio's Lite e WebApp standalone
 - persone e gruppi multipli
 - spese condivise con quote personalizzabili
 - saldi automatici, registrazione dei rimborsi e chiusura del mese
@@ -69,7 +70,7 @@ Dopo l'installazione è disponibile il pannello:
 
 `/fabios-lite`
 
-Utilizza gli stessi dati della dashboard completa ma con un'interfaccia più semplice. Le spese già inserite possono essere modificate o eliminate direttamente dalla sezione **Spese**.
+Utilizza gli stessi dati della dashboard completa ma con un'interfaccia più semplice. Le spese già inserite possono essere modificate o eliminate direttamente dalla sezione **Spese**. La divisione percentuale di ogni spesa è visibile direttamente nell'elenco.
 
 ### WebApp standalone
 
@@ -110,6 +111,7 @@ MIT License © 2026 Fabio Vittori.
 - Standalone WebApp that can be added to a smartphone Home Screen
 - edit and delete expenses in the **standalone WebApp** as well
 - WebApp version automatically synchronized with the installed Fabio's version
+- **expense percentage splits** visible in the full dashboard, Fabio's Lite and the standalone WebApp
 - multiple people and groups
 - shared expenses with customizable shares
 - automatic balances, settlement tracking and month closing
@@ -153,7 +155,7 @@ After installation, the simplified panel is available at:
 
 `/fabios-lite`
 
-It uses the same data as the full dashboard. Existing expenses can be edited or deleted directly from the **Expenses** section.
+It uses the same data as the full dashboard. Existing expenses can be edited or deleted directly from the **Expenses** section, and each expense shows its percentage split directly in the list.
 
 ### Standalone WebApp
 
