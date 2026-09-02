@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.4 — 2026-09-02
+
+### Italiano
+- La WebApp standalone mostra ora automaticamente la versione realmente installata di Fabio's invece di usare un numero di versione scritto a mano.
+- Migliorato il refresh della WebApp su iPhone/iPad dopo gli aggiornamenti, con shell e service worker senza cache persistente.
+- Aggiunta nella **WebApp standalone** la possibilità di modificare ed eliminare le spese già inserite, in linea con Fabio's Lite.
+- Durante la modifica vengono mantenuti pagatore, data, categoria, note, divisione originale ed eventuali informazioni di rata.
+- Le divisioni personalizzate vengono conservate anche se cambia l'importo.
+
+### English
+- The standalone WebApp now displays the actually installed Fabio's version instead of using a hard-coded version number.
+- Improved WebApp refresh behavior on iPhone/iPad after upgrades, with a non-persistent app shell and service-worker cache.
+- Added the ability to edit and delete existing expenses directly in the **standalone WebApp**, matching Fabio's Lite.
+- Editing preserves payer, date, category, notes, the original split and installment metadata when present.
+- Custom splits are preserved even when the amount is changed.
+
 ## 2.1.3 — 2026-09-01
 
 ### Italiano
