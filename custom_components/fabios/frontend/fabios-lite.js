@@ -81,6 +81,20 @@ class FabiosLitePanel extends HTMLElement {
     return (this.state?.balances||[])[0] || null;
   }
 
+  percentage(v){
+    const rounded=Math.round(Number(v||0)*100)/100;
+    return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
+  }
+
+  splitSummary(e){
+    const members=this.members();
+    const amount=Number(e.amount||0);
+    if(!amount || !members.length) return "—";
+    const vals=members.map(p=>Number(e.shares?.[p.id]||0));
+    const equalTwo=members.length===2 && Math.abs((vals[0]+vals[1])-amount)<.011 && Math.abs(vals[0]-vals[1])<=.011;
+    return members.map((p,i)=>`${this.person(p.id)} ${equalTwo ? "50" : this.percentage(vals[i]/amount*100)}%`).join(" · ");
+  }
+
   render() {
     const expenses=this.expenses();
     const balance=this.currentBalance();
@@ -108,7 +122,7 @@ class FabiosLitePanel extends HTMLElement {
         .section{margin-top:22px}
         .section h3{margin:0 0 10px;font-size:17px}
         .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--divider-color)}
-        .desc{font-weight:720}.meta{font-size:12px;color:var(--secondary-text-color);margin-top:3px}.amount{font-weight:800;white-space:nowrap}.ratebadge{display:inline-flex;align-items:center;margin-top:6px;padding:4px 8px;border:1px solid var(--divider-color);border-radius:999px;font-size:11px;font-weight:800;color:var(--primary-color);background:var(--secondary-background-color)}
+        .desc{font-weight:720}.meta{font-size:12px;color:var(--secondary-text-color);margin-top:3px;line-height:1.45}.amount{font-weight:800;white-space:nowrap}.ratebadge{display:inline-flex;align-items:center;margin-top:6px;padding:4px 8px;border:1px solid var(--divider-color);border-radius:999px;font-size:11px;font-weight:800;color:var(--primary-color);background:var(--secondary-background-color)}
         .rowactions{display:flex;gap:6px;justify-content:flex-end;margin-top:7px}.rowactions button{min-height:34px;padding:6px 9px;border-radius:10px;font-size:12px}
         .nav{position:sticky;bottom:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:var(--card-background-color);padding:8px;border:1px solid var(--divider-color);border-radius:20px;margin-top:24px}
         .nav button{padding:10px 6px;background:transparent;font-size:12px}
@@ -128,7 +142,7 @@ class FabiosLitePanel extends HTMLElement {
         <div class="top">
           <div>
             <div class="brand">Fabio’s</div>
-            <div class="sub">Lite · spese condivise · v2.1.2</div>
+            <div class="sub">Lite · spese condivise · v2.1.4</div>
           </div>
           <button class="ghost" id="refresh">↻</button>
         </div>
@@ -212,7 +226,7 @@ class FabiosLitePanel extends HTMLElement {
       <div style="min-width:0;flex:1">
         <div class="desc">${this.esc(e.description)}</div>
         ${installment}
-        <div class="meta">${this.esc(this.person(e.paid_by))} ha pagato · ${this.esc(e.date)}</div>
+        <div class="meta">${this.esc(this.person(e.paid_by))} ha pagato · ${this.esc(e.date)}<br>Divisione: ${this.esc(this.splitSummary(e))}</div>
       </div>
       <div style="text-align:right">
         <div class="amount">${this.money(e.amount)}</div>
