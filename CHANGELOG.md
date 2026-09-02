@@ -1,12 +1,29 @@
 # Changelog
 
+## 2.1.5 — 2026-09-02
+
+### Italiano
+- La visualizzazione delle spese mostra ora la **divisione percentuale** in tutte le interfacce: dashboard completa Fabio's, Fabio's Lite e WebApp standalone.
+- Ogni spesa indica chiaramente come è ripartito l'importo, ad esempio `Fabio Vittori 50% · Fabio Saleri 50%` oppure `Fabio Vittori 0% · Fabio Saleri 100%`.
+- Le vere divisioni 50/50 restano mostrate come `50% / 50%` anche quando l'importo richiede un arrotondamento di un centesimo.
+- Allineati i badge versione della dashboard completa e di Fabio's Lite alla release corrente.
+- Corretta anche la visualizzazione 50/50 nella modifica delle spese ricorrenti.
+- Corretta una piccola imprecisione nell'escaping HTML del frontend completo.
+
+### English
+- Expense rows now show the **percentage split** across all interfaces: the full Fabio's dashboard, Fabio's Lite and the standalone WebApp.
+- Each expense clearly shows how the amount is split, for example `Fabio Vittori 50% · Fabio Saleri 50%` or `Fabio Vittori 0% · Fabio Saleri 100%`.
+- True 50/50 splits remain displayed as `50% / 50%` even when the amount requires a one-cent rounding difference.
+- Version badges in the full dashboard and Fabio's Lite have been aligned with the current release.
+- Fixed 50/50 display when editing recurring expenses.
+- Fixed a small HTML escaping issue in the full frontend.
+
 ## 2.1.4 — 2026-09-02
 
 ### Italiano
 - La WebApp standalone mostra ora automaticamente la versione realmente installata di Fabio's invece di usare un numero di versione scritto a mano.
 - Migliorato il refresh della WebApp su iPhone/iPad dopo gli aggiornamenti, con shell e service worker senza cache persistente.
 - Aggiunta nella **WebApp standalone** la possibilità di modificare ed eliminare le spese già inserite, in linea con Fabio's Lite.
-- Nella visualizzazione delle spese, in **dashboard completa, Fabio's Lite e WebApp standalone**, viene ora mostrata anche la divisione percentuale tra le persone, ad esempio `Fabio Vittori 50% · Fabio Saleri 50%` oppure `Fabio Vittori 0% · Fabio Saleri 100%`.
 - Durante la modifica vengono mantenuti pagatore, data, categoria, note, divisione originale ed eventuali informazioni di rata.
 - Le divisioni personalizzate vengono conservate anche se cambia l'importo.
 
@@ -14,7 +31,6 @@
 - The standalone WebApp now displays the actually installed Fabio's version instead of using a hard-coded version number.
 - Improved WebApp refresh behavior on iPhone/iPad after upgrades, with a non-persistent app shell and service-worker cache.
 - Added the ability to edit and delete existing expenses directly in the **standalone WebApp**, matching Fabio's Lite.
-- Expense rows in the **full dashboard, Fabio's Lite and the standalone WebApp** now also display each person's percentage split, for example `Fabio Vittori 50% · Fabio Saleri 50%` or `Fabio Vittori 0% · Fabio Saleri 100%`.
 - Editing preserves payer, date, category, notes, the original split and installment metadata when present.
 - Custom splits are preserved even when the amount is changed.
 
