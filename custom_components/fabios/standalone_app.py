@@ -5,9 +5,16 @@ from pathlib import Path
 from aiohttp import web
 from homeassistant.components.http import HomeAssistantView
 
-from .const import DOMAIN
+from .const import DOMAIN, VERSION
 
 _FRONTEND = Path(__file__).parent / "frontend"
+
+
+def _app_html() -> str:
+    """Return the standalone app shell with the installed Fabio's version."""
+    return (_FRONTEND / "fabios-app.html").read_text(encoding="utf-8").replace(
+        "__FABIOS_VERSION__", VERSION
+    )
 
 
 class FabiosStandaloneAppView(HomeAssistantView):
@@ -17,7 +24,7 @@ class FabiosStandaloneAppView(HomeAssistantView):
 
     async def get(self, request):
         return web.Response(
-            text=(_FRONTEND / "fabios-app.html").read_text(encoding="utf-8"),
+            text=_app_html(),
             content_type="text/html",
             headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
         )
@@ -41,7 +48,7 @@ class FabiosStandaloneManifestView(HomeAssistantView):
         return web.Response(
             text=(_FRONTEND / "fabios-app.webmanifest").read_text(encoding="utf-8"),
             content_type="application/manifest+json",
-            headers={"Cache-Control": "no-cache"},
+            headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
         )
 
 
@@ -55,7 +62,7 @@ class FabiosStandaloneServiceWorkerView(HomeAssistantView):
             text=(_FRONTEND / "fabios-app-sw.js").read_text(encoding="utf-8"),
             content_type="application/javascript",
             headers={
-                "Cache-Control": "no-cache",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
                 "Service-Worker-Allowed": "/fabios-app/",
             },
         )
