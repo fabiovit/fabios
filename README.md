@@ -1,4 +1,4 @@
-# Fabio's 2.1.3
+# Fabio's 2.1.4
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
@@ -24,6 +24,8 @@ Fabio's è un'integrazione custom per Home Assistant pensata per gestire le spes
 - **Fabio's Lite**, interfaccia semplificata e ottimizzata per smartphone
 - modifica ed eliminazione delle spese direttamente da **Fabio's Lite**
 - WebApp standalone installabile dalla schermata Home dello smartphone
+- modifica ed eliminazione delle spese anche nella **WebApp standalone**
+- versione della WebApp sincronizzata automaticamente con la versione installata di Fabio's
 - persone e gruppi multipli
 - spese condivise con quote personalizzabili
 - saldi automatici, registrazione dei rimborsi e chiusura del mese
@@ -77,7 +79,7 @@ Fabio's espone anche:
 
 Aprila in Safari su iPhone/iPad e usa **Condividi → Aggiungi alla schermata Home** per creare un'icona dedicata a Fabio's.
 
-La WebApp utilizza l'autenticazione Home Assistant: non crea un secondo archivio e non richiede credenziali separate.
+La WebApp utilizza l'autenticazione Home Assistant: non crea un secondo archivio e non richiede credenziali separate. Dalla versione 2.1.4 mostra automaticamente la versione realmente installata di Fabio's e forza l'aggiornamento della shell su iOS dopo gli upgrade.
 
 ### Rate e ricorrenti
 
@@ -106,6 +108,8 @@ MIT License © 2026 Fabio Vittori.
 - **Fabio's Lite**, a simplified mobile-first interface
 - edit and delete expenses directly from **Fabio's Lite**
 - Standalone WebApp that can be added to a smartphone Home Screen
+- edit and delete expenses in the **standalone WebApp** as well
+- WebApp version automatically synchronized with the installed Fabio's version
 - multiple people and groups
 - shared expenses with customizable shares
 - automatic balances, settlement tracking and month closing
@@ -159,7 +163,7 @@ Fabio's also provides:
 
 Open it in Safari on iPhone/iPad and use **Share → Add to Home Screen** to create a dedicated Fabio's icon.
 
-The WebApp uses Home Assistant authentication and does not create a separate database or require separate credentials.
+The WebApp uses Home Assistant authentication and does not create a separate database or require separate credentials. Starting with 2.1.4, it displays the actually installed Fabio's version automatically and forces the app shell to refresh on iOS after upgrades.
 
 ### Installments and recurring expenses
 
