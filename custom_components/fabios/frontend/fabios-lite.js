@@ -142,7 +142,7 @@ class FabiosLitePanel extends HTMLElement {
         <div class="top">
           <div>
             <div class="brand">Fabio’s</div>
-            <div class="sub">Lite · spese condivise · v2.1.4</div>
+            <div class="sub">Lite · spese condivise · v2.1.5</div>
           </div>
           <button class="ghost" id="refresh">↻</button>
         </div>
