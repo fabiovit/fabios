@@ -142,7 +142,7 @@ class FabiosLitePanel extends HTMLElement {
         <div class="top">
           <div class="topbrand"><button class="ha-menu" aria-label="Apri menu Home Assistant">☰</button><div>
             <div class="brand">Fabio’s</div>
-            <div class="sub">Lite · spese condivise · v2.1.6</div>
+            <div class="sub">Lite · spese condivise · v2.1.7</div>
           </div></div>
           <button class="ghost" id="refresh">↻</button>
         </div>
