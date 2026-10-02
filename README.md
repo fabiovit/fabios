@@ -1,4 +1,4 @@
-# Fabio's 2.1.6
+# Fabio's 2.1.7
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
 ![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
