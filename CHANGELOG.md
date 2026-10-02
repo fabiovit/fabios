@@ -9,6 +9,7 @@
 - Allineati i badge versione della dashboard completa e di Fabio's Lite alla release corrente.
 - Corretta anche la visualizzazione 50/50 nella modifica delle spese ricorrenti.
 - Corretta una piccola imprecisione nell'escaping HTML del frontend completo.
+- Ripristinato su smartphone in verticale il pulsante ☰ per aprire la sidebar di Home Assistant dalla dashboard completa.
 
 ### English
 - Expense rows now show the **percentage split** across all interfaces: the full Fabio's dashboard, Fabio's Lite and the standalone WebApp.
@@ -17,6 +18,7 @@
 - Version badges in the full dashboard and Fabio's Lite have been aligned with the current release.
 - Fixed 50/50 display when editing recurring expenses.
 - Fixed a small HTML escaping issue in the full frontend.
+- Restored the ☰ button on portrait smartphones to open the Home Assistant sidebar from the full dashboard.
 
 ## 2.1.4 — 2026-09-02
 
