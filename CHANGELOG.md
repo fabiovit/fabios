@@ -3,10 +3,10 @@
 ## 2.1.6 — 2026-10-02
 
 ### Italiano
-- Ripristinato su smartphone in verticale il pulsante ☰ per aprire la sidebar di Home Assistant dalla dashboard completa, senza dover ruotare il telefono.
+- Ripristinato su smartphone in verticale il pulsante ☰ per aprire la sidebar di Home Assistant sia nella dashboard completa sia in Fabio's Lite, senza dover ruotare il telefono.
 
 ### English
-- Restored the ☰ button on portrait smartphones to open the Home Assistant sidebar from the full dashboard without rotating the phone.
+- Restored the ☰ button on portrait smartphones to open the Home Assistant sidebar from both the full dashboard and Fabio's Lite without rotating the phone.
 
 ## 2.1.5 — 2026-09-02
 
