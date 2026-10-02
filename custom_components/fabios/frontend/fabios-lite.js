@@ -106,7 +106,7 @@ class FabiosLitePanel extends HTMLElement {
         :host{display:block;min-height:100%;background:var(--primary-background-color);color:var(--primary-text-color);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
         *{box-sizing:border-box}
         .app{max-width:680px;margin:0 auto;padding:18px 16px 88px}
-        .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+        .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.topbrand{display:flex;align-items:center;gap:6px}.ha-menu{display:none;background:transparent;border:0;border-radius:12px;padding:0;width:44px;height:44px;min-height:44px;font-size:27px;line-height:1;align-items:center;justify-content:center}
         .brand{font-size:26px;font-weight:800;letter-spacing:-.7px}
         .sub{font-size:12px;color:var(--secondary-text-color)}
         .month{display:flex;align-items:center;justify-content:center;gap:10px;margin:12px 0 18px}
@@ -135,15 +135,15 @@ class FabiosLitePanel extends HTMLElement {
         .splitpreset{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
         .modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
         .empty{padding:20px 0;color:var(--secondary-text-color);text-align:center}
-        @media(max-width:420px){.big{font-size:32px}.actions{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}.row{align-items:flex-start}.rowactions{flex-direction:column}.rowactions button{width:100%}}
+        @media(max-width:900px){.ha-menu{display:flex}}@media(max-width:420px){.big{font-size:32px}.actions{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}.row{align-items:flex-start}.rowactions{flex-direction:column}.rowactions button{width:100%}}
       </style>
 
       <div class="app">
         <div class="top">
-          <div>
+          <div class="topbrand"><button class="ha-menu" aria-label="Apri menu Home Assistant">☰</button><div>
             <div class="brand">Fabio’s</div>
             <div class="sub">Lite · spese condivise · v2.1.6</div>
-          </div>
+          </div></div>
           <button class="ghost" id="refresh">↻</button>
         </div>
 
@@ -277,6 +277,7 @@ class FabiosLitePanel extends HTMLElement {
     const q=s=>this.shadowRoot.querySelector(s);
     const qa=s=>[...this.shadowRoot.querySelectorAll(s)];
 
+    q(".ha-menu")?.addEventListener("click",()=>this.dispatchEvent(new CustomEvent("hass-toggle-menu",{bubbles:true,composed:true})));
     q("#refresh")?.addEventListener("click",()=>this.load());
     q("#prevMonth")?.addEventListener("click",()=>this.shiftMonth(-1));
     q("#nextMonth")?.addEventListener("click",()=>this.shiftMonth(1));
