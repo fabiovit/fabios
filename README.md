@@ -42,6 +42,7 @@ Fabio's è un'integrazione custom per Home Assistant pensata per gestire le spes
 - sensori Home Assistant
 - storage locale persistente
 - interfaccia responsive
+- pulsante ☰ dedicato su smartphone per aprire la sidebar di Home Assistant
 - traduzioni Home Assistant in italiano e inglese
 
 ### Installazione con HACS
@@ -127,6 +128,7 @@ MIT License © 2026 Fabio Vittori.
 - Home Assistant sensors
 - persistent local storage
 - responsive interface
+- dedicated ☰ button on smartphones to open the Home Assistant sidebar
 - Home Assistant translations in Italian and English
 
 ### Install with HACS
