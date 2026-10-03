@@ -142,7 +142,7 @@ class FabiosLitePanel extends HTMLElement {
         <div class="top">
           <div class="topbrand"><button class="ha-menu" aria-label="Apri menu Home Assistant">☰</button><div>
             <div class="brand">Fabio’s</div>
-            <div class="sub">Lite · spese condivise · v2.1.8</div>
+            <div class="sub">Lite · spese condivise · v2.1.7</div>
           </div></div>
           <button class="ghost" id="refresh">↻</button>
         </div>
@@ -415,23 +415,11 @@ class FabiosLitePanel extends HTMLElement {
         notes:this.editExpenseOriginal?.notes || "Inserita da Fabio’s Lite"
       };
 
-      const isNew=!this.editExpenseId;
       if(this.editExpenseId){
         payload.expense_id=this.editExpenseId;
         await this.ws("fabios/update_expense",payload);
       } else {
         await this.ws("fabios/add_expense",payload);
-      }
-
-      if(isNew && this.person(payer).trim().toLocaleLowerCase("it-IT")==="fabio vittori"){
-        const addToAccount=confirm(`Spesa salvata in Fabio’s.\n\nVuoi aggiungere anche “${description}” (${this.money(amount)}) a Gestione Conto → Carta?`);
-        if(addToAccount){
-          try {
-            await this.ws("gestione_conto/add_card_expense",{date:payload.date,name:description,amount:Number(amount)});
-          } catch(err) {
-            alert(`La spesa è stata salvata in Fabio’s, ma non è stato possibile aggiungerla a Gestione Conto.\n\n${err.message||err}`);
-          }
-        }
       }
 
       q("#expDlg").close();
