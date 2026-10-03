@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.8 — 2026-10-03
+
+### Italiano
+- Quando **Fabio Vittori** inserisce una nuova spesa in Fabio's, viene ora chiesto facoltativamente se aggiungerla anche a **Gestione Conto → Carta**.
+- La scelta è disponibile sia nella dashboard completa sia in **Fabio's Lite**.
+- Le spese ricorrenti non vengono trasferite automaticamente: la richiesta riguarda solo le nuove spese inserite manualmente.
+- Fabio's continua a funzionare autonomamente; se Gestione Conto non è disponibile, la spesa resta comunque salvata in Fabio's.
+
+### English
+- When **Fabio Vittori** adds a new expense in Fabio's, Fabio's can now optionally ask whether to add it to **Gestione Conto → Carta** as well.
+- The opt-in is available in both the full dashboard and **Fabio's Lite**.
+- Recurring expenses are not transferred automatically: the prompt only applies to newly entered manual expenses.
+- Fabio's remains standalone; if Gestione Conto is unavailable, the expense is still saved in Fabio's.
+
 ## 2.1.7 — 2026-10-02
 
 ### Italiano
