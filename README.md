@@ -1,7 +1,7 @@
-# Fabio's 2.1.7
+# Fabio's 2.1.8
 
 [![Release](https://img.shields.io/github/v/release/fabiovit/fabios?label=release)](https://github.com/fabiovit/fabios/releases)
-![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5)
+![Home Assistant Marketplace](https://img.shields.io/badge/Home%20Assistant-Marketplace-41BDF5)
 [![Validate](https://github.com/fabiovit/fabios/actions/workflows/validate.yml/badge.svg)](https://github.com/fabiovit/fabios/actions/workflows/validate.yml)
 [![Hassfest](https://github.com/fabiovit/fabios/actions/workflows/hassfest.yml/badge.svg)](https://github.com/fabiovit/fabios/actions/workflows/hassfest.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
