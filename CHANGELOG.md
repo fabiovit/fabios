@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.8 — 2026-11-08
+
+### Italiano
+- Aggiornata la presentazione del progetto per il Marketplace integrato in Home Assistant 2026.11.
+- Confermata la compatibilità del repository con la struttura delle integrazioni personalizzate del Marketplace (`hacs.json`, `custom_components/fabios`, manifest e workflow di validazione).
+- Nessuna modifica ai dati o al funzionamento delle spese.
+
+### English
+- Updated project presentation for the built-in Marketplace in Home Assistant 2026.11.
+- Confirmed repository layout for Marketplace custom integrations (`hacs.json`, `custom_components/fabios`, manifest and validation workflows).
+- No changes to expense data or accounting behavior.
+
 ## 2.1.7 — 2026-10-02
 
 ### Italiano
